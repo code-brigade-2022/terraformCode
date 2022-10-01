@@ -17,14 +17,14 @@ terraform {
 
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
-        features {}
-         subscription_id   = "7703a13e-c5e9-4503-88de-6a4892b0b3c7"
-         tenant_id         = "f07b40ae-b60b-4e0f-bebe-afb42fc4dc69"
-         client_id         = "df3cc47a-20cd-44c1-9255-cfc9d8ae6d2c"
-         client_secret     = "nf-LJPAqQq~78kNEKz7cir7woLPTOJ-pWP"
+     features {}
+     subscription_id   = "7703a13e-c5e9-4503-88de-6a4892b0b3c7"
+     tenant_id         = "f07b40ae-b60b-4e0f-bebe-afb42fc4dc69"
+     client_id         = "df3cc47a-20cd-44c1-9255-cfc9d8ae6d2c"
+     client_secret     = "nf-LJPAqQq~78kNEKz7cir7woLPTOJ-pWP"
 }
 
-# VM
+# RG
 resource "azurerm_resource_group" "rg" {
   name     = "RG-${var.teamName}"
   location = var.location
@@ -60,4 +60,24 @@ resource "azurerm_app_service_source_control" "sourcecontrol" {
   branch             = "master"
   use_manual_integration = true
   use_mercurial      = false
+}
+
+
+# Application log analytics
+resource "azurerm_log_analytics_workspace" "logs" {
+  name                = "${var.logAnalyticsPrefix}-${var.teamName}-01"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "PerGB2018"
+  retention_in_days   = 30
+  tags = var.tags
+}
+
+resource "azurerm_application_insights" "example" {
+  name                = "${var.appInsightsPrefix}-${var.teamName}-01"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+  workspace_id        = azurerm_log_analytics_workspace.logs.id
+  application_type    = "web"
+  tags = var.tags
 }
