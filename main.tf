@@ -18,10 +18,6 @@ terraform {
 # Configure the Microsoft Azure Provider
 provider "azurerm" {
      features {}
-     subscription_id   = "7703a13e-c5e9-4503-88de-6a4892b0b3c7"
-     tenant_id         = "f07b40ae-b60b-4e0f-bebe-afb42fc4dc69"
-     client_id         = "df3cc47a-20cd-44c1-9255-cfc9d8ae6d2c"
-     client_secret     = "nf-LJPAqQq~78kNEKz7cir7woLPTOJ-pWP"
 }
 
 # RG
@@ -56,7 +52,7 @@ resource "azurerm_linux_web_app" "webapp" {
 #  Deploy code from a public GitHub repo
 resource "azurerm_app_service_source_control" "sourcecontrol" {
   app_id             = azurerm_linux_web_app.webapp.id
-  repo_url           = "https://github.com/iukion/CopaHackathon_html_base.git"
+  repo_url           = "https://github.com/code-brigade-2022/CopaReto1.git"
   branch             = "master"
   use_manual_integration = true
   use_mercurial      = false
