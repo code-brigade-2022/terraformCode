@@ -12,8 +12,8 @@ az_login (){
     echo -e "${GREEN} login to Azure Account:"
     az login
     # set subcription account
-    # echo -e "${GREEN} setting account..."
-    # az account set --subcription ${ARM_SUBSCRIPTION_ID}
+    echo -e "${GREEN} seteando la subcripcion..."
+    az account set --subcription ${SUBID}
 }
 
 create_service_principal() {
